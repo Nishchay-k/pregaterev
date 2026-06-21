@@ -173,7 +173,7 @@ async function main() {
       targetExam: 'CSE',
       targetScore: 70,
       dailyHours: 6,
-      targetDate: '2026-02-08',
+      targetDate: '2027-02-06',
     }
   })
 

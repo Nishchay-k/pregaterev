@@ -8,7 +8,7 @@ export async function getOrCreateUser() {
   let user = await prisma.user.findUnique({ where: { email: 'demo@gateforge.com' } })
   if (!user) {
     user = await prisma.user.create({
-      data: { email: 'demo@gateforge.com', name: 'GATE Aspirant', targetExam: 'CSE', targetScore: 70, dailyHours: 6, targetDate: '2026-02-08' }
+      data: { email: 'demo@gateforge.com', name: 'GATE Aspirant', targetExam: 'CSE', targetScore: 70, dailyHours: 6, targetDate: '2027-02-06' }
     })
     await prisma.analytics.create({ data: { userId: user.id } })
   }

@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { BookOpen, LayoutDashboard, FileQuestion, ClipboardList, RefreshCw, BarChart2, StickyNote, Bot, Settings, Menu, X, Zap, ChevronDown, Info } from 'lucide-react'
@@ -19,7 +19,18 @@ const NAV = [
 
 export default function TopNav() {
   const [open, setOpen] = useState(false)
+  const [examYear, setExamYear] = useState<string>('')
   const path = usePathname()
+
+  useEffect(() => {
+    fetch('/api/settings').then(r => r.json()).then(d => {
+      const dateStr = d.user?.targetDate
+      if (dateStr) {
+        const year = new Date(dateStr).getFullYear()
+        if (!isNaN(year)) setExamYear(String(year))
+      }
+    }).catch(() => {})
+  }, [])
 
   return (
     <>
@@ -60,10 +71,12 @@ export default function TopNav() {
 
           <div className="flex-1 lg:flex-none" />
 
-          {/* GATE Badge */}
-          <div className="hidden sm:flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 rounded-full px-2 py-0.5">
-            <span className="text-blue-400 text-xs font-bold">GATE 2026</span>
-          </div>
+          {/* GATE Badge — reflects the user's actual target year from Settings */}
+          {examYear && (
+            <div className="hidden sm:flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 rounded-full px-2 py-0.5">
+              <span className="text-blue-400 text-xs font-bold">GATE {examYear}</span>
+            </div>
+          )}
 
           {/* Mobile Hamburger */}
           <button onClick={() => setOpen(true)} className="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-all">

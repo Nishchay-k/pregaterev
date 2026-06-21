@@ -1,8 +1,9 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
-import { BookOpen, Target, Clock, Flame, TrendingUp, RefreshCw, CheckCircle2, ChevronRight } from 'lucide-react'
+import { BookOpen, Target, Clock, Flame, TrendingUp, RefreshCw, CheckCircle2, ChevronRight, Calendar } from 'lucide-react'
 import Link from 'next/link'
+import { daysUntil } from '@/lib/utils'
 
 export default function Dashboard() {
   const [data, setData] = useState<any>(null)
@@ -38,7 +39,14 @@ export default function Dashboard() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-white">Welcome back, {data?.user?.name?.split(' ')[0] || 'Aspirant'} 👋</h1>
-          <p className="text-slate-400 text-sm mt-0.5">GATE {data?.user?.targetExam} · Target: {data?.user?.targetScore} marks</p>
+          <div className="flex items-center gap-3 mt-0.5 flex-wrap">
+            <p className="text-slate-400 text-sm">GATE {data?.user?.targetExam} · Target: {data?.user?.targetScore} marks</p>
+            {data?.user?.targetDate && (
+              <span className="flex items-center gap-1 text-xs text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full px-2 py-0.5">
+                <Calendar size={11} /> {daysUntil(data.user.targetDate)} days to go
+              </span>
+            )}
+          </div>
         </div>
         <div className="flex gap-2">
           {data?.dueRevisions > 0 && (
